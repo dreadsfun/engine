@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- New XML document created with EditiX XML Editor (http://www.editix.com) at Sat Oct 22 11:23:27 CEST 2016 -->
+
+
+<root xsi:noNamespaceSchemaLocation="exschema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <A>
+    <!-- if the ref-number is not equal to one of the key-number, the validation will give error -->
+    <part ref-number="1"/>
+  </A>
+  <A>
+    <!-- if the ref-number is not equal to one of the key-number, the validation will give error -->
+    <part ref-number="2"/>
+  </A>
+  <B>
+    <part key-number="1"/>
+    <part key-number="2"/>
+    <part key-number="3"/>
+  </B>
+</root>

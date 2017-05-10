@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:complexType name="AttachmentType">
+    <xs:attribute name="ComponentId" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="OwnerType">
+    <xs:attribute name="ActorName" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="Component">
+    <xs:sequence>
+      
+      <xs:element name="Owner" type="OwnerType" minOccurs="0" maxOccurs="unbounded"/>
+      
+    </xs:sequence>
+    <xs:attribute name="ComponentId" type="xs:string"/>
+  </xs:complexType>
+
+  
+  <xs:complexType name="ActorType">
+    <xs:sequence>
+      
+      <xs:element name="Components">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Component" type="AttachmentType" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      
+      <xs:element name="ComponentCount" type="xs:integer"/>
+      
+    </xs:sequence>
+    <xs:attribute name="ActorName" type="xs:string"/>
+  </xs:complexType>
+
+  
+  <xs:complexType name="SceneType">
+    <xs:sequence>
+      <xs:element name="IsLoaded" type="xs:boolean"/>
+      <xs:element name="IsStartup" type="xs:boolean"/>
+      
+      <xs:element name="Actors">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Actor" type="ActorType" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      
+    </xs:sequence>
+    <xs:attribute name="SceneName" type="xs:string" use="required"/>
+  </xs:complexType>
+    
+  
+  <xs:element name="GameApplication">
+    <xs:complexType>
+      <xs:sequence>
+        
+        <xs:element name="Scenes">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Scene" type="SceneType" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="ComponentImpls">
+          <xs:complexType>
+            <xs:sequence>
+              
+              <xs:element name="Material">
+                <xs:complexType>
+                  <xs:complexContent>
+                    <xs:extension base="Component">
+                      <xs:sequence>
+                        <xs:element name="ShaderName" type="xs:string"/>
+                      </xs:sequence>
+                    </xs:extension>
+                  </xs:complexContent>
+                </xs:complexType>
+              </xs:element>
+
+              <xs:element name="MeshRenderer" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:complexContent>
+                    <xs:extension base="Component">
+                      <xs:sequence>
+                        <xs:element name="MeshName" type="xs:string"/>
+                      </xs:sequence>
+                    </xs:extension>
+                  </xs:complexContent>
+                </xs:complexType>
+              </xs:element>
+
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        
+      </xs:sequence>
+    </xs:complexType>
+
+    <xs:key name="SceneNameKey">
+      <xs:selector xpath="Scenes/Scene"/>
+      <xs:field xpath="@SceneName"/>
+    </xs:key>
+    
+    <xs:key name="ActorNameKey">
+      <xs:selector xpath="Scenes/Scene/Actors/Actor"/>
+      <xs:field xpath="@ActorName"/>
+    </xs:key>
+
+    <xs:key name="ComponentIdKey">
+      <xs:selector xpath="ComponentImpls/*"/>
+      <xs:field xpath="@ComponentId"/>
+    </xs:key>
+
+    <xs:keyref name="ActorToComponent" refer="ComponentIdKey">
+      <xs:selector xpath="Scenes/Scene/Actors/Actor/Components/Component"/>
+      <xs:field xpath="@ComponentId"/>
+    </xs:keyref>
+
+    <xs:keyref name="ComponentToActor" refer="ActorNameKey">
+      <xs:selector xpath="ComponentImpls/*/Owner"/>
+      <xs:field xpath="@ActorName"/>
+    </xs:keyref>
+    
+  </xs:element>
+  
+</xs:schema>

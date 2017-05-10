@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GameApplication xsi:noNamespaceSchemaLocation="schema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Scenes>
+		<Scene SceneName="Scene1">
+			<IsLoaded>false</IsLoaded>
+			<IsStartup>true</IsStartup>
+			<Actors>
+				<Actor ActorName="Actor1">
+					<Components>
+						<Component ComponentId="MaterialC1"/>
+						<Component ComponentId="MeshRendererC1"/>
+					</Components>
+					<ComponentCount>2</ComponentCount>
+				</Actor>
+				
+				<Actor ActorName="Actor2">
+					<Components>
+						<Component ComponentId="MeshRendererC1"/>
+					</Components>
+					<ComponentCount>1</ComponentCount>
+				</Actor>
+			</Actors>
+		</Scene>
+		
+		<Scene SceneName="Scene2">
+			<IsLoaded>true</IsLoaded>
+			<IsStartup>false</IsStartup>
+			<Actors></Actors>
+		</Scene>
+	</Scenes>
+	
+	<ComponentImpls>
+		<Material ComponentId="MaterialC1">
+			<Owner ActorName="Actor1"/>
+			<ShaderName>frag.fs</ShaderName>
+		</Material>
+		
+		<MeshRenderer ComponentId="MeshRendererC1">
+			<Owner ActorName="Actor1"/>
+			<Owner ActorName="Actor2"/>
+			<MeshName>cube.m</MeshName>
+		</MeshRenderer>
+	</ComponentImpls>
+	
+</GameApplication>
